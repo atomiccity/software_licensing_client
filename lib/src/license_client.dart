@@ -12,7 +12,7 @@ class LicenseClient {
   LicenseClient({required this.publicKey, required this.storage, required this.activator});
 
   Future<bool> loadLocalLicense() async {
-    _license = await storage.loadLicense();
+    _license = await storage.loadLicense(publicKey);
     return _license != null;
   }
 
