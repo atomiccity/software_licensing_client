@@ -35,7 +35,8 @@ RSAPrivateKey pemToRsaPrivateKey(String pem) {
   final modulus = publicKeySequence.elements?[0] as ASN1Integer;
   final exponent = publicKeySequence.elements?[1] as ASN1Integer;
 
-  return RSAPrivateKey(_decodeBigInt(modulus.valueBytes!), _decodeBigInt(exponent.valueBytes!));
+  // TODO: Check the final two parameters in the following constructor
+  return RSAPrivateKey(_decodeBigInt(modulus.valueBytes!), _decodeBigInt(exponent.valueBytes!), null, null);
 }
 
 BigInt _decodeBigInt(List<int> bytes) {
