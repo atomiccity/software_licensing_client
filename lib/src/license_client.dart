@@ -20,7 +20,8 @@ class LicenseClient {
     required String key,
     String? username,
     String? machineId,
-    required Function(String) onError,
+    required Function onSuccess,
+    required Function(String message) onError,
   }) async {
     var response = await activator.activateLicense(
       key: key,
@@ -34,11 +35,20 @@ class LicenseClient {
       // Cache the license in this service
       var licenseReader = SoftwareLicenseIO(publicKey: publicKey);
       _license = licenseReader.read(response.licenseFileData!);
+      onSuccess();
       return true;
     } else {
       onError(response.message);
       return false;
     }
+  }
+
+  String? licensedTo() {
+    return _license?.licensedTo;
+  }
+
+  bool hasValidLicense() {
+    return (_license != null) && _license!.validForHostName() && _license!.validForTime();
   }
 
   bool hasFeature(String feature) {
