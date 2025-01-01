@@ -16,6 +16,8 @@ abstract class LicenseActivator {
   });
 }
 
+/// A [LicenseActivator] that validates/activates a license key by making a request to
+/// a web API endpoint.
 class WebApiLicenseActivator extends LicenseActivator {
   final String host;
   final String path;

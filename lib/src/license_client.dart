@@ -11,11 +11,18 @@ class LicenseClient {
 
   LicenseClient({required this.publicKey, required this.storage, required this.activator});
 
+  /// Attempt to load a locally stored software license.
+  ///
+  /// Returns `true` if a license exists locally, `false` otherwise
   Future<bool> loadLocalLicense() async {
     _license = await storage.loadLicense(publicKey);
     return _license != null;
   }
 
+  /// Attempt to activate a license key and retrieve a license from a remote server
+  ///
+  /// Returns `true` if the key was valid and a license could be downloaded,
+  /// `false` otherwise
   Future<bool> activateLicense({
     required String key,
     String? username,
@@ -43,14 +50,17 @@ class LicenseClient {
     }
   }
 
+  /// Returns the user the software is licensed to, if available
   String? licensedTo() {
     return _license?.licensedTo;
   }
 
+  /// Returns `true` if the software license is available and valid
   bool hasValidLicense() {
     return (_license != null) && _license!.validForHostName() && _license!.validForTime();
   }
 
+  /// Checks to see if a feature has been licensed to use
   bool hasFeature(String feature) {
     return (_license != null) &&
         _license!.validForTime() &&
